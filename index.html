@@ -16,18 +16,23 @@
     }
 
     .profil-link {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    z-index: 1000;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  }
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.profil-link:hover {
+  background-color: #45a049;
+}
+
 
   .profil-link:hover {
     background-color: #45a049;
@@ -180,13 +185,7 @@
     <!-- Tambahkan game lain nanti di sini -->
   </div>
 </main>
-
-<footer>
-  <img src="piggy.jpeg" alt="Foto Profil">
-  <h3>Piggy Kejanggalan Terrfying</h3>
-  <p>Oink oink oink oink oink oink oink, oink oink oink oink. Oink oink oink oink oink, oink oink oink. 🐖 🐖 🐖</p>
-</footer>
-
+  
 <script>
   function showGames() {
     document.querySelector('.play-button').style.display = 'none';
