@@ -79,6 +79,34 @@
 #creditBtn:hover {
   background-color: #45a049;
 }
+@media (max-width: 600px) {
+  #game {
+    grid-template-columns: repeat(5, 16vw);
+    gap: 2vw;
+  }
+
+  .cell {
+    width: 16vw;
+    height: 16vw;
+    font-size: 3vw;
+  }
+
+  input,
+  button {
+    font-size: 4vw;
+    padding: 3vw;
+  }
+
+  #creditBtn {
+    padding: 3vw 5vw;
+    font-size: 3.5vw;
+  }
+
+  #info p,
+  .status {
+    font-size: 4vw;
+  }
+}
 
   </style>
 </head>
