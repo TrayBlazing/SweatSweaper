@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piggy Slots</title>
+  <style>
+    body {
+      background-color: #1f1f1f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
 
+    h1 {
+      color: #4caf50;
+    }
+
+    .slot-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 30px auto;
+    }
+
+    .slot {
+      background-color: #333;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 48px;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .spin-button {
+      background: linear-gradient(135deg, #ff6f00, #ffcc00);
+      color: black;
+      border: none;
+      padding: 14px 28px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+      margin-top: 20px;
+    }
+
+    .spin-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #4caf50;
+    }
+
+    .back-to-home, .profil-link {
+      position: fixed;
+      top: 20px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background-color: #4caf50;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      z-index: 1000;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .back-to-home {
+      left: 20px;
+    }
+
+    .profil-link {
+      right: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-to-home">🏠 Kembali ke Beranda</a>
+  <a href="profil.html" class="profil-link">👤 Profil Pembuat</a>
+
+  <h1>🎰 Piggy Slots</h1>
+
+  <div class="slot-container">
+    <div class="slot" id="slot1">🐷</div>
+    <div class="slot" id="slot2">🐷</div>
+    <div class="slot" id="slot3">🐷</div>
+  </div>
+
+  <button class="spin-button" onclick="spinSlots()">Putar Slot</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    const symbols = ['🐷', '🍒', '💰', '🔔', '⭐', '💎'];
+
+    function spinSlots() {
+      const slot1 = document.getElementById('slot1');
+      const slot2 = document.getElementById('slot2');
+      const slot3 = document.getElementById('slot3');
+      const result = document.getElementById('result');
+
+      const r1 = symbols[Math.floor(Math.random() * symbols.length)];
+      const r2 = symbols[Math.floor(Math.random() * symbols.length)];
+      const r3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+      slot1.textContent = r1;
+      slot2.textContent = r2;
+      slot3.textContent = r3;
+
+      if (r1 === r2 && r2 === r3) {
+        result.textContent = '🎉 Jackpot! Kamu Menang!';
+      } else if (r1 === r2 || r2 === r3 || r1 === r3) {
+        result.textContent = '✨ Hampir! Coba Lagi!';
+      } else {
+        result.textContent = '😢 Belum Beruntung. Putar Lagi!';
+      }
+    }
+  </script>
+
+</body>
+</html>
