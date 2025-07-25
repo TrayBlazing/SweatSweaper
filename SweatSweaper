@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PIGGY BOMB🐖</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1f1f1f;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #creditBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #4caf50;
+      color: white;
+      padding: 8px 14px;
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 4px;
+      font-weight: bold;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+      transition: background-color 0.3s ease;
+    }
+
+    #creditBtn:hover {
+      background-color: #45a049;
+    }
+
+    #game {
+      display: grid;
+      grid-template-columns: repeat(5, 80px);
+      gap: 10px;
+      margin: 20px auto;
+      max-width: 450px;
+    }
+
+    .cell {
+      width: 80px;
+      height: 80px;
+      background-color: #333;
+      border: 2px solid #555;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .cell.revealed {
+      background-color: #4caf50;
+      cursor: default;
+    }
+
+    .cell.bomb {
+      background-color: #f44336;
+    }
+
+    #controls {
+      margin-top: 20px;
+    }
+
+    input {
+      padding: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 14px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    #info {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    /* === MOBILE FRIENDLY === */
+    @media (max-width: 600px) {
+      #game {
+        grid-template-columns: repeat(5, 16vw);
+        gap: 2vw;
+      }
+
+      .cell {
+        width: 16vw;
+        height: 16vw;
+        font-size: 3vw;
+      }
+
+      input,
+      button {
+        font-size: 4vw;
+        padding: 3vw;
+      }
+
+      #creditBtn {
+        padding: 3vw 5vw;
+        font-size: 3.5vw;
+      }
+
+      #info p,
+      .status {
+        font-size: 4vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="mainan.html" id="creditBtn">👤 Dibuat oleh</a>
+
+  <h1>💣 Piggy Bomb</h1>
+
+  <div id="controls">
+    <form id="formSaldo">
+      <input type="number" id="inputSaldo" placeholder="Isi Saldo" />
+      <button type="submit">💸 Tambah Saldo</button>
+    </form>
+
+    <form id="formTaruhan">
+      <input type="number" id="inputTaruhan" placeholder="Pasang Taruhan" />
+      <button type="submit">🎯 Pasang Taruhan</button>
+    </form>
+
+    <button id="cancelBetBtn">❌ Batalkan Taruhan</button>
+    <button id="restartBtn">🔄 Main Lagi</button>
+  </div>
+
+  <div id="info">
+    <p id="saldoDisplay">💰 Saldo: Rp 0</p>
+    <p id="taruhanDisplay">🎯 Taruhan: -</p>
+    <p id="moneyDisplay">🏆 Total Menang: Rp 0</p>
+    <p id="lossDisplay">💸 Total Kalah: Rp 0</p>
+    <p class="status" id="status"></p>
+  </div>
+
+  <div id="game"></div>
+
+  <script>
+    const gridSize = 5;
+    const totalCells = gridSize * gridSize;
+    let saldo = 0;
+    let selectedBet = 0;
+    let totalWin = 0;
+    let totalLoss = 0;
+    let bufferReward = 0;
+    let bombPositions = new Set();
+    let revealedSafeCells = 0;
+    let gameOver = false;
+    let rewardMap = {};
+
+    const gameContainer = document.getElementById('game');
+    const status = document.getElementById('status');
+    const moneyDisplay = document.getElementById('moneyDisplay');
+    const lossDisplay = document.getElementById('lossDisplay');
+    const saldoDisplay = document.getElementById('saldoDisplay');
+    const taruhanDisplay = document.getElementById('taruhanDisplay');
+    const restartBtn = document.getElementById('restartBtn');
+    const cancelBetBtn = document.getElementById('cancelBetBtn');
+    const formSaldo = document.getElementById('formSaldo');
+    const formTaruhan = document.getElementById('formTaruhan');
+    const inputSaldo = document.getElementById('inputSaldo');
+    const inputTaruhan = document.getElementById('inputTaruhan');
+
+    function updateDisplays() {
+      saldoDisplay.textContent = `💰 Saldo: Rp ${saldo.toLocaleString('id-ID')}`;
+      moneyDisplay.textContent = `🏆 Total Menang: Rp ${totalWin.toLocaleString('id-ID')}`;
+      lossDisplay.textContent = `💸 Total Kalah: Rp ${totalLoss.toLocaleString('id-ID')}`;
+      taruhanDisplay.textContent = selectedBet > 0
+        ? `🎯 Taruhan Aktif: Rp ${selectedBet.toLocaleString('id-ID')}`
+        : '🎯 Taruhan: -';
+    }
+
+    function generateBombs() {
+      bombPositions.clear();
+      while (bombPositions.size < 1) {
+        bombPositions.add(Math.floor(Math.random() * totalCells));
+      }
+    }
+
+    function generateRewards() {
+      rewardMap = {};
+      const totalReward = selectedBet * 3;
+      const safeCells = [];
+      for (let i = 0; i < totalCells; i++) {
+        if (!bombPositions.has(i)) {
+          safeCells.push(i);
+        }
+      }
+
+      let remaining = totalReward;
+      for (let i = 0; i < safeCells.length; i++) {
+        const remainingCells = safeCells.length - i;
+        let maxReward = Math.floor(remaining / remainingCells * 1.5);
+        let reward = i === safeCells.length - 1 ? remaining : Math.floor(Math.random() * maxReward) + 1;
+        rewardMap[safeCells[i]] = reward;
+        remaining -= reward;
+      }
+    }
+
+    function createBoard() {
+      gameContainer.innerHTML = '';
+      for (let i = 0; i < totalCells; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.index = i;
+        cell.addEventListener('click', () => handleClick(cell));
+        gameContainer.appendChild(cell);
+      }
+    }
+
+    function handleClick(cell) {
+      if (gameOver || cell.classList.contains('revealed')) return;
+      if (selectedBet <= 0) {
+        status.textContent = '⚠️ Masukkan taruhan terlebih dahulu!';
+        return;
+      }
+
+      const index = parseInt(cell.dataset.index);
+      cell.classList.add('revealed');
+
+      if (bombPositions.has(index)) {
+        cell.textContent = '💣';
+        cell.classList.add('bomb');
+        status.textContent = `💥 Kena BOM! Anda kalah dan kehilangan Rp ${selectedBet.toLocaleString('id-ID')}`;
+        totalLoss += selectedBet;
+        selectedBet = 0;
+        bufferReward = 0;
+        gameOver = true;
+        revealAllBombs();
+        updateDisplays();
+      } else {
+        const reward = rewardMap[index] || 0;
+        bufferReward += reward;
+        revealedSafeCells++;
+        cell.textContent = `+${reward}`;
+        status.textContent = `✅ Aman! Total Sementara: Rp ${bufferReward.toLocaleString('id-ID')}`;
+        updateDisplays();
+
+        if (revealedSafeCells === totalCells - bombPositions.size) {
+          status.textContent = `🎉 Semua aman! Kamu menang Rp ${bufferReward.toLocaleString('id-ID')}`;
+          saldo += bufferReward;
+          totalWin += bufferReward;
+          bufferReward = 0;
+          selectedBet = 0;
+          gameOver = true;
+          updateDisplays();
+        }
+      }
+    }
+
+    function revealAllBombs() {
+      const cells = document.querySelectorAll('.cell');
+      bombPositions.forEach(index => {
+        const bombCell = cells[index];
+        bombCell.classList.add('revealed', 'bomb');
+        bombCell.textContent = '💣';
+      });
+    }
+
+   restartBtn.addEventListener('click', () => {
+  if (!gameOver && selectedBet > 0) {
+    status.textContent = "⚠️ Anda belum menyelesaikan taruhan ini. Gunakan tombol ❌ Batalkan Taruhan untuk mengulang.";
+    return;
+  }
+
+  selectedBet = 0;
+  bufferReward = 0;
+  revealedSafeCells = 0;
+  gameOver = false;
+  status.textContent = '';
+  updateDisplays();
+  generateBombs();
+  generateRewards();
+  createBoard();
+});
+
+
+    cancelBetBtn.addEventListener('click', () => {
+      if (selectedBet > 0 && !gameOver) {
+        saldo += selectedBet;
+        status.textContent = `Taruhan sebesar Rp ${selectedBet.toLocaleString('id-ID')} dibatalkan.`;
+        selectedBet = 0;
+        updateDisplays();
+      } else {
+        status.textContent = "Tidak ada taruhan yang aktif atau permainan sudah selesai.";
+      }
+    });
+
+    formSaldo.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const tambah = parseInt(inputSaldo.value);
+      if (isNaN(tambah) || tambah <= 0) {
+        alert("Masukkan saldo yang valid!");
+        return;
+      }
+      saldo += tambah;
+      inputSaldo.value = '';
+      updateDisplays();
+    });
+
+    formTaruhan.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const bet = parseInt(inputTaruhan.value);
+      if (isNaN(bet) || bet <= 0) {
+        alert("Masukkan nominal taruhan yang valid!");
+        return;
+      }
+      if (bet > saldo) {
+        alert("❌ Taruhan melebihi saldo yang tersedia!");
+        return;
+      }
+
+      saldo -= bet;
+      selectedBet = bet;
+      bufferReward = 0;
+      revealedSafeCells = 0;
+      gameOver = false;
+      status.textContent = '';
+      inputTaruhan.value = '';
+      generateBombs();
+      generateRewards();
+      createBoard();
+      updateDisplays();
+    });
+
+    updateDisplays();
+    createBoard();
+  </script>
+</body>
+</html>
