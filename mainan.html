@@ -10,12 +10,13 @@
       color: #fff;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 40px 20px;
+      padding: 40px 16px;
+      font-size: 16px; /* Ukuran dasar yang cukup besar untuk ponsel */
     }
 
     .profile-card {
       background-color: #2c2c2c;
-      padding: 30px 20px;
+      padding: 24px;
       border-radius: 12px;
       max-width: 600px;
       margin: 0 auto;
@@ -25,20 +26,20 @@
     .profile-card img {
       width: 100%;
       max-width: 300px;
-      max-height: 300px;       /* 🔧 Batasi tinggi gambar */
+      max-height: 300px;
       height: auto;
-      object-fit: cover;       /* 🔧 Potong gambar secara proporsional agar tidak panjang ke atas/bawah */
+      object-fit: cover;
       margin-bottom: 20px;
     }
 
     h1 {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       color: #4caf50;
-      font-size: 6vw;
+      font-size: 24px;
     }
 
     p {
-      font-size: 4vw;
+      font-size: 16px;
       line-height: 1.6;
       margin-bottom: 20px;
     }
@@ -56,31 +57,16 @@
     .back {
       margin-top: 30px;
       display: inline-block;
-      padding: 10px 18px;
+      padding: 12px 20px;
       background-color: #4caf50;
       color: white;
       border-radius: 6px;
       text-decoration: none;
-      font-size: 4vw;
+      font-size: 16px;
     }
 
     .back:hover {
       background-color: #45a049;
-    }
-
-    /* Desktop fix */
-    @media (min-width: 600px) {
-      h1 {
-        font-size: 28px;
-      }
-
-      p {
-        font-size: 16px;
-      }
-
-      .back {
-        font-size: 16px;
-      }
     }
   </style>
 </head>
