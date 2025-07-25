@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ditambahkan agar mobile-friendly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dibuat oleh</title>
   <style>
     body {
@@ -10,7 +10,7 @@
       color: #fff;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 40px 20px; /* Tambahan padding horizontal agar tidak terlalu sempit di mobile */
+      padding: 40px 20px;
     }
 
     .profile-card {
@@ -25,7 +25,9 @@
     .profile-card img {
       width: 100%;
       max-width: 300px;
+      max-height: 300px;       /* 🔧 Batasi tinggi gambar */
       height: auto;
+      object-fit: cover;       /* 🔧 Potong gambar secara proporsional agar tidak panjang ke atas/bawah */
       margin-bottom: 20px;
     }
 
@@ -33,14 +35,12 @@
       margin-bottom: 10px;
       color: #4caf50;
       font-size: 6vw;
-      max-font-size: 32px;
     }
 
     p {
       font-size: 4vw;
       line-height: 1.6;
       margin-bottom: 20px;
-      max-width: 100%;
     }
 
     a {
@@ -61,19 +61,24 @@
       color: white;
       border-radius: 6px;
       text-decoration: none;
-      font-size: 16px;
+      font-size: 4vw;
     }
 
     .back:hover {
       background-color: #45a049;
     }
 
+    /* Desktop fix */
     @media (min-width: 600px) {
       h1 {
         font-size: 28px;
       }
 
       p {
+        font-size: 16px;
+      }
+
+      .back {
         font-size: 16px;
       }
     }
