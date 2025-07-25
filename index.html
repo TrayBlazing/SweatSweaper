@@ -172,18 +172,19 @@
   </style>
 </head>
 <body>
-  <a href="profil.html" class="profil-link">👤 Profil Pembuat</a>
+  <a href="mainan.html" class="profil-link">👤 Profil Pembuat</a>
 
 <main>
   <button class="play-button" onclick="showGames()"><span>🔥 Mainkan</span></button>
 
-  <div id="game-list">
-    <div class="game-option">
-      <button class="game-button" onclick="location.href='index.html'">💣 Piggy Bomb</button>
-      <p class="description">Game menantang ala Minesweeper. Temukan area aman dan hindari bom! (Keterangan bisa kamu ubah)</p>
-    </div>
-    <!-- Tambahkan game lain nanti di sini -->
+  <div id="game-list" class="hidden">
+  <h2 class="game-instruction">🎮 Silakan pilih game yang ingin dimainkan:</h2>
+  <div class="game-buttons">
+    <a href="minesweeper.html" class="game-button">💣 Piggy Bomb</a>
+    <!-- Tombol game lain akan ditambahkan di sini -->
   </div>
+</div>
+
 </main>
   
 <script>
