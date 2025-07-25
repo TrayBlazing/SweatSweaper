@@ -274,16 +274,21 @@
     }
 
     restartBtn.addEventListener('click', () => {
-      selectedBet = 0;
-      bufferReward = 0;
-      revealedSafeCells = 0;
-      gameOver = false;
-      status.textContent = '';
-      updateDisplays();
-      generateBombs();
-      generateRewards();
-      createBoard();
-    });
+  if (!gameOver && selectedBet > 0) {
+    saldo += selectedBet;
+    status.textContent = `🔁 Taruhan sebesar Rp ${selectedBet.toLocaleString('id-ID')} dikembalikan.`;
+  }
+  selectedBet = 0;
+  bufferReward = 0;
+  revealedSafeCells = 0;
+  gameOver = false;
+  updateDisplays();
+  status.textContent = '';
+  generateBombs();
+  generateRewards();
+  createBoard();
+});
+
 
     cancelBetBtn.addEventListener('click', () => {
       if (selectedBet > 0 && !gameOver) {
