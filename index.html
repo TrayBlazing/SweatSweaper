@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cepat Kaya😊</title>
+  <title>PIGGY BOMB🐖</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -273,17 +273,18 @@
       });
     }
 
-    restartBtn.addEventListener('click', () => {
+   restartBtn.addEventListener('click', () => {
   if (!gameOver && selectedBet > 0) {
-    saldo += selectedBet;
-    status.textContent = `🔁 Taruhan sebesar Rp ${selectedBet.toLocaleString('id-ID')} dikembalikan.`;
+    status.textContent = "⚠️ Anda belum menyelesaikan taruhan ini. Gunakan tombol ❌ Batalkan Taruhan untuk mengulang.";
+    return;
   }
+
   selectedBet = 0;
   bufferReward = 0;
   revealedSafeCells = 0;
   gameOver = false;
-  updateDisplays();
   status.textContent = '';
+  updateDisplays();
   generateBombs();
   generateRewards();
   createBoard();
