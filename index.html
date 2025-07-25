@@ -19,38 +19,41 @@
     }
 
     .play-button {
-      background-color: #4caf50;
-      color: white;
-      font-size: 24px;
-      padding: 16px 32px;
+      font-size: 28px;
+      padding: 22px 48px;
       border: none;
-      border-radius: 10px;
+      border-radius: 14px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s;
+      color: white;
+      background: linear-gradient(135deg, #7f00ff, #00bcd4, #ff00c8);
+      background-size: 400% 400%;
+      animation: gradientMove 8s ease infinite;
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+      transition: transform 0.3s ease;
     }
 
     .play-button:hover {
-      transform: scale(1.05);
+      transform: scale(1.08);
     }
 
-    .play-button::before {
-      content: "";
+    .play-button::after {
+      content: '';
       position: absolute;
-      top: -100%;
-      left: -100%;
-      width: 300%;
-      height: 300%;
-      background: radial-gradient(circle, rgba(255, 140, 0, 0.6) 10%, transparent 60%);
-      animation: flame 1s infinite linear;
-      opacity: 0;
-      transition: opacity 0.3s;
-      z-index: 0;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: skewX(-25deg);
+      pointer-events: none;
+      transition: left 0.5s ease;
     }
 
-    .play-button:hover::before {
-      opacity: 1;
+    .play-button:active::after {
+      left: 200%;
+      transition: left 0.2s ease-out;
     }
 
     .play-button span {
@@ -58,34 +61,28 @@
       z-index: 1;
     }
 
-    @keyframes flame {
-      0% {
-        transform: translate(0, 0) rotate(0deg);
-      }
-      50% {
-        transform: translate(-10px, -10px) rotate(45deg);
-      }
-      100% {
-        transform: translate(10px, 10px) rotate(90deg);
-      }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     #game-list {
       display: none;
       flex-direction: column;
-      gap: 16px;
-      margin-top: 30px;
+      gap: 18px;
+      margin-top: 40px;
       width: 100%;
-      max-width: 320px;
+      max-width: 360px;
     }
 
     .game-button {
       background-color: #333;
       color: white;
-      padding: 12px;
+      padding: 16px;
       border: none;
-      border-radius: 8px;
-      font-size: 18px;
+      border-radius: 10px;
+      font-size: 20px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s;
     }
@@ -94,6 +91,18 @@
       background-color: #4caf50;
       transform: scale(1.03);
     }
+
+    @media (max-width: 500px) {
+      .play-button {
+        font-size: 22px;
+        padding: 18px 36px;
+      }
+
+      .game-button {
+        font-size: 18px;
+        padding: 14px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -101,12 +110,8 @@
   <button class="play-button" onclick="showGames()"><span>🔥 Mainkan</span></button>
 
   <div id="game-list">
-    <button class="game-button" onclick="location.href='index.html'">💣 Piggy Bomb</button>
-    <!-- Game lainnya bisa ditambahkan di bawah -->
-    <!--
-    <button class="game-button">🎰 Slot (Coming Soon)</button>
-    <button class="game-button">🎲 Roulette (Coming Soon)</button>
-    -->
+    <button class="game-button" onclick="location.href='sweatsweaper.html'">💣 Piggy Bomb</button>
+    <!-- Tambahkan game lain di sini -->
   </div>
 
   <script>
