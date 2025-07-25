@@ -11,11 +11,17 @@
       color: white;
       font-family: Arial, sans-serif;
       display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      overflow: hidden;
+      padding: 30px 20px;
     }
 
     .play-button {
@@ -70,26 +76,64 @@
     #game-list {
       display: none;
       flex-direction: column;
-      gap: 18px;
+      gap: 24px;
       margin-top: 40px;
       width: 100%;
-      max-width: 360px;
+      max-width: 400px;
+    }
+
+    .game-option {
+      background-color: #2c2c2c;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
 
     .game-button {
       background-color: #333;
       color: white;
-      padding: 16px;
+      padding: 14px 20px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 20px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s;
+      width: 100%;
     }
 
     .game-button:hover {
       background-color: #4caf50;
       transform: scale(1.03);
+    }
+
+    .description {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    footer {
+      background-color: #111;
+      padding: 20px;
+      text-align: center;
+      border-top: 1px solid #444;
+    }
+
+    footer img {
+      max-width: 120px;
+      height: auto;
+      margin-bottom: 12px;
+    }
+
+    footer h3 {
+      margin: 6px 0;
+      color: #4caf50;
+    }
+
+    footer p {
+      font-size: 14px;
+      color: #bbb;
     }
 
     @media (max-width: 500px) {
@@ -100,26 +144,36 @@
 
       .game-button {
         font-size: 18px;
-        padding: 14px;
       }
     }
   </style>
 </head>
 <body>
 
+<main>
   <button class="play-button" onclick="showGames()"><span>🔥 Mainkan</span></button>
 
   <div id="game-list">
-    <button class="game-button" onclick="location.href='sweatsweaper.html'">💣 Piggy Bomb</button>
-    <!-- Tambahkan game lain di sini -->
+    <div class="game-option">
+      <button class="game-button" onclick="location.href='index.html'">💣 Piggy Bomb</button>
+      <p class="description">Game menantang ala Minesweeper. Temukan area aman dan hindari bom! (Keterangan bisa kamu ubah)</p>
+    </div>
+    <!-- Tambahkan game lain nanti di sini -->
   </div>
+</main>
 
-  <script>
-    function showGames() {
-      document.querySelector('.play-button').style.display = 'none';
-      document.getElementById('game-list').style.display = 'flex';
-    }
-  </script>
+<footer>
+  <img src="piggy.jpeg" alt="Foto Profil">
+  <h3>Piggy Kejanggalan Terrfying</h3>
+  <p>Oink oink oink oink oink oink oink, oink oink oink oink. Oink oink oink oink oink, oink oink oink. 🐖 🐖 🐖</p>
+</footer>
+
+<script>
+  function showGames() {
+    document.querySelector('.play-button').style.display = 'none';
+    document.getElementById('game-list').style.display = 'flex';
+  }
+</script>
 
 </body>
 </html>
