@@ -15,6 +15,24 @@
       min-height: 100vh;
     }
 
+    .profil-link {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .profil-link:hover {
+    background-color: #45a049;
+  }
+    
     main {
       flex-grow: 1;
       display: flex;
@@ -149,6 +167,7 @@
   </style>
 </head>
 <body>
+  <a href="profil.html" class="profil-link">👤 Profil Pembuat</a>
 
 <main>
   <button class="play-button" onclick="showGames()"><span>🔥 Mainkan</span></button>
