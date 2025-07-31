@@ -1,165 +1,156 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Piggy Slots</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Permainan Slot</title>
   <style>
     body {
       background-color: #1f1f1f;
-      color: white;
+      color: #fff;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
+      padding: 40px 20px;
+      margin: 0;
     }
 
-    h1 {
-      color: #4caf50;
+    .profile-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4caf50;
+      color: white;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      z-index: 100;
+    }
+
+    .profile-button:hover {
+      background-color: #45a049;
     }
 
     .slot-container {
       display: flex;
       justify-content: center;
-      gap: 15px;
-      margin: 30px auto;
+      gap: 20px;
+      margin: 50px 0;
+      font-size: 60px;
     }
 
-    .slot {
-      background-color: #333;
-      border-radius: 12px;
-      padding: 20px;
-      font-size: 48px;
-      width: 80px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-    }
-
-    .spin-button {
-      background: linear-gradient(135deg, #ff6f00, #ffcc00);
-      color: black;
-      border: none;
-      padding: 14px 28px;
-      font-size: 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.3s;
-      margin-top: 20px;
-    }
-
-    .spin-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
-    }
-
-    .result {
-      margin-top: 20px;
+    button {
+      padding: 16px 40px;
       font-size: 20px;
-      color: #4caf50;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 194, 255, 0.4);
+      transition: transform 0.2s ease;
     }
 
-    .back-to-home, .profil-link {
-      position: fixed;
-      top: 20px;
-      padding: 10px 16px;
-      border-radius: 8px;
-      background-color: #4caf50;
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-      z-index: 1000;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
     }
 
-    .back-to-home {
-      left: 20px;
+    #result {
+      font-size: 22px;
+      margin-top: 30px;
     }
 
-    .profil-link {
-      right: 20px;
+    @media (max-width: 600px) {
+      .slot-container {
+        font-size: 40px;
+      }
+
+      button {
+        padding: 14px 24px;
+        font-size: 18px;
+      }
+
+      .profile-button {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <a href="index.html" class="back-to-home">🏠 Kembali ke Beranda</a>
-  <a href="profil.html" class="profil-link">👤 Profil Pembuat</a>
+  <!-- Tombol profil -->
+  <a href="profil.html" class="profile-button">Profil</a>
 
-  <h1>🎰 Piggy Slots</h1>
+  <h1>🎰 Mesin Slot</h1>
 
   <div class="slot-container">
-    <div class="slot" id="slot1">🐷</div>
-    <div class="slot" id="slot2">🐷</div>
-    <div class="slot" id="slot3">🐷</div>
+    <div id="slot1">🎰</div>
+    <div id="slot2">🎰</div>
+    <div id="slot3">🎰</div>
   </div>
 
-  <button class="spin-button" onclick="spinSlots()">Putar Slot</button>
+  <button onclick="spinSlots()">Putar Slot</button>
 
-  <div class="result" id="result"></div>
+  <p id="result"></p>
 
+  <!-- Audio -->
   <audio id="win-sound" src="win.mp3" preload="auto"></audio>
-  
-<audio id="lose-sound" src="lose.mp3" preload="auto"></audio>
+  <audio id="lose-sound" src="lose.mp3" preload="auto"></audio>
+
   <script>
-    <script>
-  const symbols = ["🐷", "🍒", "💰", "🔔", "⭐", "💎"];
-  const slots = [
-    document.getElementById("slot1"),
-    document.getElementById("slot2"),
-    document.getElementById("slot3"),
-  ];
-  const result = document.getElementById("result");
+    const symbols = ["🐷", "🍒", "💰", "🔔", "⭐", "💎"];
+    const slots = [
+      document.getElementById("slot1"),
+      document.getElementById("slot2"),
+      document.getElementById("slot3"),
+    ];
+    const result = document.getElementById("result");
 
-  const spinSound = document.getElementById("spin-sound");
-  const winSound = document.getElementById("win-sound");
-  const loseSound = document.getElementById("lose-sound");
+    const winSound = document.getElementById("win-sound");
+    const loseSound = document.getElementById("lose-sound");
 
-  let intervals = [];
+    let intervals = [];
 
-  function spinSlots() {
-    result.textContent = "";
+    function spinSlots() {
+      result.textContent = "";
 
-    // Mainkan suara spin (durasi 5 detik)
-    spinSound.currentTime = 0;
-    spinSound.play();
+      intervals.forEach(clearInterval);
+      intervals = [];
 
-    // Putar simbol acak cepat untuk ketiga slot
-    intervals.forEach(clearInterval);
-    intervals = [];
-
-    for (let i = 0; i < slots.length; i++) {
-      intervals[i] = setInterval(() => {
-        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
-        slots[i].textContent = symbol;
-      }, 100);
-    }
-
-    // Hentikan secara berurutan pada detik ke 4
-    setTimeout(() => clearInterval(intervals[0]), 4000);
-    setTimeout(() => clearInterval(intervals[1]), 4200);
-    setTimeout(() => clearInterval(intervals[2]), 4400);
-
-    // Evaluasi hasil di detik ke-5
-    setTimeout(() => {
-      const r1 = slots[0].textContent;
-      const r2 = slots[1].textContent;
-      const r3 = slots[2].textContent;
-
-      if (r1 === r2 && r2 === r3) {
-        result.textContent = "🎉 Jackpot! Kamu Menang!";
-        winSound.currentTime = 0;
-        winSound.play();
-      } else {
-        result.textContent = "😢 Belum Beruntung. Coba Lagi!";
-        loseSound.currentTime = 0;
-        loseSound.play();
+      // Mulai putar ketiga slot
+      for (let i = 0; i < slots.length; i++) {
+        intervals[i] = setInterval(() => {
+          const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+          slots[i].textContent = symbol;
+        }, 100);
       }
-    }, 5000);
-  }
-</script>
 
+      // Hentikan reel satu per satu
+      setTimeout(() => clearInterval(intervals[0]), 4000);
+      setTimeout(() => clearInterval(intervals[1]), 4200);
+      setTimeout(() => clearInterval(intervals[2]), 4400);
+
+      // Tampilkan hasil setelah 5 detik
+      setTimeout(() => {
+        const r1 = slots[0].textContent;
+        const r2 = slots[1].textContent;
+        const r3 = slots[2].textContent;
+
+        if (r1 === r2 && r2 === r3) {
+          result.textContent = "🎉 Jackpot! Kamu Menang!";
+          winSound.currentTime = 0;
+          winSound.play();
+        } else {
+          result.textContent = "😢 Belum Beruntung. Coba Lagi!";
+          loseSound.currentTime = 0;
+          loseSound.play();
+        }
+      }, 5000);
+    }
+  </script>
 </body>
 </html>
