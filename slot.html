@@ -35,6 +35,7 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
     }
 
     .spin-button {
@@ -99,32 +100,66 @@
 
   <div class="result" id="result"></div>
 
+  <audio id="win-sound" src="win.mp3" preload="auto"></audio>
+  
+<audio id="lose-sound" src="lose.mp3" preload="auto"></audio>
   <script>
-    const symbols = ['🐷', '🍒', '💰', '🔔', '⭐', '💎'];
+    <script>
+  const symbols = ["🐷", "🍒", "💰", "🔔", "⭐", "💎"];
+  const slots = [
+    document.getElementById("slot1"),
+    document.getElementById("slot2"),
+    document.getElementById("slot3"),
+  ];
+  const result = document.getElementById("result");
 
-    function spinSlots() {
-      const slot1 = document.getElementById('slot1');
-      const slot2 = document.getElementById('slot2');
-      const slot3 = document.getElementById('slot3');
-      const result = document.getElementById('result');
+  const spinSound = document.getElementById("spin-sound");
+  const winSound = document.getElementById("win-sound");
+  const loseSound = document.getElementById("lose-sound");
 
-      const r1 = symbols[Math.floor(Math.random() * symbols.length)];
-      const r2 = symbols[Math.floor(Math.random() * symbols.length)];
-      const r3 = symbols[Math.floor(Math.random() * symbols.length)];
+  let intervals = [];
 
-      slot1.textContent = r1;
-      slot2.textContent = r2;
-      slot3.textContent = r3;
+  function spinSlots() {
+    result.textContent = "";
+
+    // Mainkan suara spin (durasi 5 detik)
+    spinSound.currentTime = 0;
+    spinSound.play();
+
+    // Putar simbol acak cepat untuk ketiga slot
+    intervals.forEach(clearInterval);
+    intervals = [];
+
+    for (let i = 0; i < slots.length; i++) {
+      intervals[i] = setInterval(() => {
+        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+        slots[i].textContent = symbol;
+      }, 100);
+    }
+
+    // Hentikan secara berurutan pada detik ke 4
+    setTimeout(() => clearInterval(intervals[0]), 4000);
+    setTimeout(() => clearInterval(intervals[1]), 4200);
+    setTimeout(() => clearInterval(intervals[2]), 4400);
+
+    // Evaluasi hasil di detik ke-5
+    setTimeout(() => {
+      const r1 = slots[0].textContent;
+      const r2 = slots[1].textContent;
+      const r3 = slots[2].textContent;
 
       if (r1 === r2 && r2 === r3) {
-        result.textContent = '🎉 Jackpot! Kamu Menang!';
-      } else if (r1 === r2 || r2 === r3 || r1 === r3) {
-        result.textContent = '✨ Hampir! Coba Lagi!';
+        result.textContent = "🎉 Jackpot! Kamu Menang!";
+        winSound.currentTime = 0;
+        winSound.play();
       } else {
-        result.textContent = '😢 Belum Beruntung. Putar Lagi!';
+        result.textContent = "😢 Belum Beruntung. Coba Lagi!";
+        loseSound.currentTime = 0;
+        loseSound.play();
       }
-    }
-  </script>
+    }, 5000);
+  }
+</script>
 
 </body>
 </html>
